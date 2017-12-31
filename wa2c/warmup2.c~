@@ -1,0 +1,33 @@
+/*
+ * Author:      Divya Jagadeesh
+ * Created: 	9/15/17
+ *
+ */
+
+#include <stdio.h>
+#include <string.h> 
+#include <stdlib.h>
+#include <sys/time.h>
+
+#include "cs402.h" 
+#include "my402list.h"
+
+void readInput(argc, argv) {
+	int i = 0; 
+	for (i = 0; i < argc; i++) {
+		if (strcmp("-t", argv[i]) {
+			
+		}
+	}
+}
+
+/* ----------------------- main() ----------------------- */
+
+int main(int argc, char *argv[])
+{
+
+    if (argError(argc, argv) == 0) {
+        readInput(argc, argv);
+    }
+    return(0);
+}

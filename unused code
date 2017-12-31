@@ -1,0 +1,192 @@
+
+// void traceDrivenInput(int argc, char *argv[]) {
+// 	FILE *fp = NULL;
+// 	char buf[1024] = "";
+// 	int numOfLines = 0;
+
+// 	// find which argument is file name
+// 	int i = 0;
+// 	int fileName = 0;
+// 	for (i = 0; i < argc; i++) {
+// 		if (strcmp(argv[i], "-t") == 0) {
+// 			i++;
+// 			fileName = i;
+// 		}
+// 	}
+
+// 	fp = fopen(argv[fileName], "r");
+// 	while (fgets(buf, sizeof(buf), fp) != NULL) {
+// 		// if (strlen(start_ptr) > 1023) {
+//   //           fprintf(stderr, "A mistake was made on line %d.\n", numOfLines);
+//   //           fprintf(stderr, "Each transaction is limited to 1024 characters per line.\n");
+//   //           exit(1);
+//   //       }
+// 		if (numOfLines == 0) {
+// 			num = atoi(buf);
+// 			printf("in trace driven input function and num is: %ld\n", num);
+// 		}
+// 		else {
+			
+// 		}
+// 		numOfLines = numOfLines + 1;
+// 	}
+// }
+
+
+
+
+
+
+
+// void dequeueFromQ2Server1() {
+
+// 	if (signalFlag == 1) {
+// 		while (server1 == 0) {
+// 			usleep(100000);
+// 		}
+// 		pthread_cancel(server1);
+// 	}
+
+// 	// get current time
+// 	struct timeval currTime;
+// 	gettimeofday(&currTime, NULL);
+
+// 	// first element in Q2
+// 	My402ListElem *firstNode = My402ListFirst(Q2);
+// 	PacketInfo *firstPacket = My402ListFirst(Q2)->obj;
+
+// 	// find first element in Q2 in allPackets list
+// 	My402ListElem *allPacketsNode = findInAllPackets(firstNode);
+// 	PacketInfo *allPacketsPacket = allPacketsNode->obj;
+
+// 	// update leaves Q2 and time in Q2
+// 	firstPacket->leavesQ2 = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->leavesQ2 = formattedTime(currTime, timeBegins);
+// 	firstPacket->timeInQ2 = firstPacket->leavesQ2 - firstPacket->entersQ2;
+// 	allPacketsPacket->timeInQ2 = allPacketsPacket->leavesQ2 - allPacketsPacket->entersQ2;
+
+// 	// leaves Q2 message
+// 	fprintf(stdout, "%012.3fms: p%d leaves Q2, time in Q2 = %.3fms\n", firstPacket->leavesQ2, firstPacket->packetNum, firstPacket->timeInQ2);
+
+// 	My402ListUnlink(Q2, firstNode);		// unlink from Q2 list
+
+// 	// current time for server message
+// 	gettimeofday(&currTime, NULL);
+
+// 	// enters server
+// 	allPacketsPacket->entersServer = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->server = 1;
+
+// 	// begins service at S1 or S2
+// 	if (mode == 1){
+// 		fprintf(stdout, "%012.3fms: p%d begins service at S1, requesting %dms of service\n", allPacketsPacket->entersServer, allPacketsPacket->packetNum, (int) allPacketsPacket->requestedServiceTime);
+// 	}
+// 	else {
+// 		int secondsInService = 1000.0/allPacketsPacket->requestedServiceTime;
+// 		fprintf(stdout, "%012.3fms: p%d begins service at S1, requesting %dms of service\n", allPacketsPacket->entersServer, allPacketsPacket->packetNum, secondsInService);
+// 	}
+	
+// 	pthread_mutex_unlock(&mutex);
+// 	// sleep depending on which mode sim is in (trace or deterministic)
+// 	if (mode == 1){
+// 		double sleepTime = allPacketsPacket->requestedServiceTime;
+// 		usleep(1000.0*sleepTime);
+// 	}
+// 	else {
+// 		usleep(1000000.0/mu);
+// 	}
+// 	pthread_mutex_lock(&mutex);
+
+// 	// current time for server message
+// 	gettimeofday(&currTime, NULL);
+
+// 	// leaves server, calculate server time
+// 	allPacketsPacket->leavesServer = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->timeInServer = allPacketsPacket->leavesServer - allPacketsPacket->entersServer;
+// 	allPacketsPacket->timeInSystem = allPacketsPacket->leavesServer - allPacketsPacket->arrives;
+// 	allPacketsPacket->packetStatus = 1;
+
+// 	// print leaves server statistic
+// 	fprintf(stdout, "%012.3fms: p%d departs from S1, service time = %.3fms, time in system = %.3fms\n", allPacketsPacket->leavesServer, allPacketsPacket->packetNum, allPacketsPacket->timeInServer, allPacketsPacket->timeInSystem);
+
+
+
+
+
+
+
+
+
+// void dequeueFromQ2Server2() {
+
+// 	if (signalFlag == 1) {
+// 		while (server2 == 0) {
+// 			usleep(100000);
+// 		}
+// 		pthread_cancel(server2);
+// 	}
+
+// 	// get current time
+// 	struct timeval currTime;
+// 	gettimeofday(&currTime, NULL);
+
+// 	// first element in Q2
+// 	My402ListElem *firstNode = My402ListFirst(Q2);
+// 	PacketInfo *firstPacket = My402ListFirst(Q2)->obj;
+
+// 	// find first element in Q2 in allPackets list
+// 	My402ListElem *allPacketsNode = findInAllPackets(firstNode);
+// 	PacketInfo *allPacketsPacket = allPacketsNode->obj;
+
+// 	// update leaves Q2 and time in Q2
+// 	firstPacket->leavesQ2 = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->leavesQ2 = formattedTime(currTime, timeBegins);
+// 	firstPacket->timeInQ2 = firstPacket->leavesQ2 - firstPacket->entersQ2;
+// 	allPacketsPacket->timeInQ2 = allPacketsPacket->leavesQ2 - allPacketsPacket->entersQ2;
+
+// 	// leaves Q2 message
+// 	fprintf(stdout, "%012.3fms: p%d leaves Q2, time in Q2 = %.3fms\n", firstPacket->leavesQ2, firstPacket->packetNum, firstPacket->timeInQ2);
+
+// 	My402ListUnlink(Q2, firstNode);		// unlink from Q2 list
+
+// 	// current time for server message
+// 	gettimeofday(&currTime, NULL);
+
+// 	// enters server
+// 	allPacketsPacket->entersServer = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->server = 2;
+
+// 	// begins service at S1 or S2
+// 	if (mode == 1){
+// 		fprintf(stdout, "%012.3fms: p%d begins service at S2, requesting %dms of service\n", allPacketsPacket->entersServer, allPacketsPacket->packetNum, (int) allPacketsPacket->requestedServiceTime);
+// 	}
+// 	else {
+// 		int secondsInService = 1000.0/allPacketsPacket->requestedServiceTime;
+// 		fprintf(stdout, "%012.3fms: p%d begins service at S2, requesting %dms of service\n", allPacketsPacket->entersServer, allPacketsPacket->packetNum, secondsInService);
+// 	}
+	
+// 	pthread_mutex_unlock(&mutex);
+// 	// sleep depending on which mode sim is in (trace or deterministic)
+// 	if (mode == 1){
+// 		double sleepTime = allPacketsPacket->requestedServiceTime;
+// 		usleep(1000.0*sleepTime);
+// 	}
+// 	else {
+// 		usleep(1000000.0/mu);
+// 	}
+// 	pthread_mutex_lock(&mutex);
+
+// 	// current time for server message
+// 	gettimeofday(&currTime, NULL);
+
+// 	// leaves server, calculate server time
+// 	allPacketsPacket->leavesServer = formattedTime(currTime, timeBegins);
+// 	allPacketsPacket->timeInServer = allPacketsPacket->leavesServer - allPacketsPacket->entersServer;
+// 	allPacketsPacket->timeInSystem = allPacketsPacket->leavesServer - allPacketsPacket->arrives;
+// 	allPacketsPacket->packetStatus = 1;
+
+// 	// print leaves server statistic
+// 	fprintf(stdout, "%012.3fms: p%d departs from S2, service time = %.3fms, time in system = %.3fms\n", allPacketsPacket->leavesServer, allPacketsPacket->packetNum, allPacketsPacket->timeInServer, allPacketsPacket->timeInSystem);
+
+// }
+// }

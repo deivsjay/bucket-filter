@@ -1,0 +1,3 @@
+NOTES: 
+
+segmentation fault when ctrl+c is pressed and no packets have entered lists
